@@ -32,7 +32,7 @@ script:
   - export ARCH=arm64 SUBARCH=arm64
   - export KBUILD_BUILD_USER=danascape
   - export KBUILD_BUILD_HOST=travisCI
-  - make O=out X00P_defconfig
+  - make O=out vince-perf_defconfig ARCH=arm64
   - 
   - make -j$(nproc --all) O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- LLVM="llvm-"
 before_deploy:

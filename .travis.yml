@@ -1,0 +1,48 @@
+language: C
+sudo: required
+cache: ccache
+
+before_install:
+  - echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
+  - ccache -M 0
+  - ccache -F 0
+  - sudo fallocate -l 8G /swapfile
+  - sudo chmod 600 /swapfile
+  - sudo mkswap /swapfile
+  - sudo swapon /swapfile
+  - export GITHUB_TOKEN="$GITHUB_TOKEN"
+  - export release_repo="danascape/kernel-CI"
+  - export TRAVIS_TAG=${TRAVIS_TAG:-$(date +'%Y%m%d%H%M%S')}
+  - sudo apt-get update
+  - sudo apt-get install -y bc bison build-essential curl flex g++-multilib gcc-multilib gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev libesd0-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc yasm zlib1g-dev
+  - sudo apt install -y liblz4-dev openjdk-8-jdk android-tools-adb bc bison build-essential curl flex g++-multilib gcc-multilib gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev libesd0-dev liblz4-tool libncurses5-dev libsdl1.2-dev libssl-dev libwxgtk3.0-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc yasm zip zlib1g-dev
+before_script:
+  - cd $HOME && PATH=~/bin:$PATH
+  - curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
+  - chmod a+x ~/bin/repo
+script:
+  - cd $HOME && git clone -b x00pd https://github.com/iamsaalim/kernel-msm-4.9 --depth 1 kernel
+  - cd $HOME/kernel
+  - git clone https://github.com/stormbreaker-project/aarch64-linux-android-4.9 --depth 1
+  - export ARCH=arm64 SUBARCH=arm64
+  - export KBUILD_BUILD_USER=danascape
+  - export KBUILD_BUILD_HOST=travisCI  
+  - export CROSS_COMPILE="$PWD/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+  - make O=out X00P_defconfig
+  - 
+  - make O=out  
+before_deploy:
+  # Set up git user name and tag this commit
+  - git config --local user.name "iamsaalim"
+  - git config --local user.email "saalimquadri1@gmail.com"
+  - git tag $TRAVIS_TAG
+deploy:
+  provider: releases
+  api_key: "$GITHUB_TOKEN"
+  file: $HOME/kernel/out/arch/arm64/boot/Image.gz-dtb
+  file: $HOME/kernel/out/arch/arm64/boot/Image.gz
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: danascape/kernel-CI
+    branch: master

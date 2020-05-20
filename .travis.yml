@@ -21,18 +21,18 @@ before_script:
   - curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
   - chmod a+x ~/bin/repo
 script:
-  - cd $HOME && git clone -b arashi https://github.com/stormbreaker-project/kernel_xiaomi_vince-4.9 --depth 1 kernel
+  - cd $HOME && git clone -b 19-05 https://github.com/stormbreaker-project/X00P-4.9 --depth 1 kernel
   - cd $HOME/kernel
   - git clone https://github.com/stormbreaker-project/aarch64-linux-android-4.9 --depth 1 gcc
   - git clone https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 --depth 1 gcc32
-  - git clone --depth=1 https://github.com/crdroidmod/android_prebuilts_clang_host_linux-x86_clang-6284175 clang
+  - git clone --depth=1 https://github.com/Haseo97/Clang-10.0.0 clang
   - export PATH="$HOME/kernel/clang/bin:$HOME/kernel/gcc/bin:$HOME/kernel/gcc32/bin:$PATH"
   - export LD_LIBRARY_PATH="$HOME/kernel/clang/lib:$HOME/kernel/clang/lib64:$LD_LIBRARY_PATH"
   - export KBUILD_COMPILER_STRING="$("$HOME/kernel/clang/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
   - export ARCH=arm64 SUBARCH=arm64
   - export KBUILD_BUILD_USER=danascape
   - export KBUILD_BUILD_HOST=travisCI
-  - make O=out vince-perf_defconfig ARCH=arm64
+  - make O=out X00P_defconfig ARCH=arm64
   - 
   - make -j$(nproc --all) O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- LLVM="llvm-"
 before_deploy:
@@ -44,6 +44,7 @@ deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file: $HOME/kernel/out/arch/arm64/boot/Image.gz-dtb
+  file: $HOME/kernel/out/arch/arm64/boot/dts/qcom/msm8937-pmi8940-X00P.dtb
   skip_cleanup: true
   on:
     tags: true

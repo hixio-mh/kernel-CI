@@ -30,14 +30,13 @@ script:
   - git clone https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 --depth 1 gcc32
   - git clone --depth=1 https://github.com/Haseo97/Clang-10.0.0 clang
   - export PATH="$HOME/kernel/clang/bin:$HOME/kernel/gcc/bin:$HOME/kernel/gcc32/bin:$PATH"
-  - export LD_LIBRARY_PATH="$HOME/kernel/clang/lib:$HOME/kernel/clang/lib64:$LD_LIBRARY_PATH"
   - export KBUILD_COMPILER_STRING="$("$HOME/kernel/clang/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
   - export ARCH=arm64 SUBARCH=arm64
   - export KBUILD_BUILD_USER=danascape
   - export KBUILD_BUILD_HOST=travisCI
   - make O=out X00P_defconfig ARCH=arm64
   - 
-  - make -j$(nproc --all) O=out ARCH=arm64 CC=clang CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi- LLVM="llvm-"
+  - make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
 before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "iamsaalim"

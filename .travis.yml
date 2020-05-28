@@ -36,7 +36,7 @@ script:
   - git clone -b X00P https://github.com/stormbreaker-project/AnyKernel3
   - cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
   - cd AnyKernel3
-  - make clean && zip -r9 stormbreaker-x00p-test1.zip
+  - make clean && zip -r9 stormbreaker-x00p-test1.zip *
 before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "iamsaalim"

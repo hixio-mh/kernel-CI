@@ -27,15 +27,12 @@ script:
   - cd $HOME && git clone https://github.com/iamsaalim/kernel_asus_X00P --depth 1 kernel
   - cd $HOME/kernel
   - git clone https://github.com/stormbreaker-project/aarch64-linux-android-4.9 --depth 1 gcc
-  - git clone https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 --depth 1 gcc32
-  - git clone --depth=1 https://github.com/Haseo97/Clang-10.0.0 clang
-  - export PATH="$HOME/kernel/clang/bin:$HOME/kernel/gcc/bin:$HOME/kernel/gcc32/bin:$PATH"
-  - export KBUILD_COMPILER_STRING="$("$HOME/kernel/clang/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
+  - export PATH="$HOME/kernel/gcc/bin:$PATH"
   - export ARCH=arm64 SUBARCH=arm64
   - export KBUILD_BUILD_USER=danascape
   - export KBUILD_BUILD_HOST=travisCI
   - make O=out X00P_defconfig ARCH=arm64
-  - make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
+  - make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-android-
   - git clone -b X00P https://github.com/stormbreaker-project/AnyKernel3
   - cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
   - cd AnyKernel3

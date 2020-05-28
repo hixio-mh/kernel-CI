@@ -24,7 +24,7 @@ before_script:
   - curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
   - chmod a+x ~/bin/repo
 script:
-  - cd $HOME && git clone -b 19-05 https://github.com/stormbreaker-project/X00P-4.9 --depth 1 kernel
+  - cd $HOME && git clone https://github.com/iamsaalim/kernel_asus_X00P --depth 1 kernel
   - cd $HOME/kernel
   - git clone https://github.com/stormbreaker-project/aarch64-linux-android-4.9 --depth 1 gcc
   - git clone https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 --depth 1 gcc32
@@ -35,7 +35,6 @@ script:
   - export KBUILD_BUILD_USER=danascape
   - export KBUILD_BUILD_HOST=travisCI
   - make O=out X00P_defconfig ARCH=arm64
-  - 
   - make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
 before_deploy:
   # Set up git user name and tag this commit

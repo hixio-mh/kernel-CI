@@ -36,6 +36,9 @@ script:
   - export KBUILD_BUILD_HOST=travisCI
   - make O=out X00P_defconfig ARCH=arm64
   - make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-android- CROSS_COMPILE_ARM32=arm-linux-androideabi-
+  - git clone -b X00P https://github.com/stormbreaker-project/AnyKernel3
+  - cd AnyKernel3
+  - make clean && make normal
 before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "iamsaalim"
@@ -46,6 +49,7 @@ deploy:
   api_key: "$GITHUB_TOKEN"
   file: $HOME/kernel/out/arch/arm64/boot/Image.gz-dtb
   file: $HOME/kernel/out/arch/arm64/boot/dts/qcom/msm8937-pmi8940-X00P.dtb
+  file: $HOME/kernel/AnyKernel3/Stormbreaker*.zip
   skip_cleanup: true
   on:
     tags: true

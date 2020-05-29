@@ -24,7 +24,7 @@ before_script:
   - curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
   - chmod a+x ~/bin/repo
 script:
-  - cd $HOME && git clone https://github.com/iamsaalim/kernel_asus_X00P --depth 1 kernel
+  - cd $HOME && git clone -b kud https://github.com/iamsaalim/kernel_asus_X00P --depth 1 kernel
   - cd $HOME/kernel
   - git clone https://github.com/stormbreaker-project/aarch64-linux-android-4.9 --depth 1 gcc
   - export PATH="$HOME/kernel/gcc/bin:$PATH"
@@ -36,7 +36,9 @@ script:
   - git clone -b X00P https://github.com/stormbreaker-project/AnyKernel3
   - cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
   - cd AnyKernel3
-  - zip -r9 stormbreaker-x00p-test5.zip *
+  - zip -r9 stormbreaker-x00p-test6.zip *
+  - cd /home/travis/kernel/out/arch/arm64/boot/dts
+  - zip -r9 dtbs.zip qcom/*
 before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "iamsaalim"
@@ -45,10 +47,8 @@ before_deploy:
 deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
-  file: $HOME/kernel/out/arch/arm64/boot/Image.gz-dtb
-  file: $HOME/kernel/out/arch/arm64/boot/dts/qcom/msm8937-pmi8940-X00P.dtb
-  file: $HOME/kernel/out/arch/arm64/boot/dts/qcom/msm8917-pmi8940-X00P.dtb
-  file: $HOME/kernel/AnyKernel3/stormbreaker-x00p-test5.zip
+  file: $HOME/kernel/out/arch/arm64/boot/dts/dtbs.zip
+  file: $HOME/kernel/AnyKernel3/stormbreaker-x00p-test6.zip
   skip_cleanup: true
   on:
     tags: true

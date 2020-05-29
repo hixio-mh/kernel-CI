@@ -36,7 +36,7 @@ script:
   - git clone -b X00P https://github.com/stormbreaker-project/AnyKernel3
   - cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
   - cd AnyKernel3
-  - zip -r9 stormbreaker-x00p-test3.zip *
+  - zip -r9 stormbreaker-x00p-test4.zip *
 before_deploy:
   # Set up git user name and tag this commit
   - git config --local user.name "iamsaalim"
@@ -48,7 +48,7 @@ deploy:
   file: $HOME/kernel/out/arch/arm64/boot/Image.gz-dtb
   file: $HOME/kernel/out/arch/arm64/boot/dts/qcom/msm8937-pmi8940-X00P.dtb
   file: $HOME/kernel/out/arch/arm64/boot/dts/qcom/msm8917-pmi8940-X00P.dtb
-  file: $HOME/kernel/AnyKernel3/stormbreaker-x00p-test3.zip
+  file: $HOME/kernel/AnyKernel3/stormbreaker-x00p-test4.zip
   skip_cleanup: true
   on:
     tags: true

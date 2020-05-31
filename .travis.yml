@@ -36,7 +36,7 @@ script:
   - git clone -b X00P https://github.com/stormbreaker-project/AnyKernel3
   - cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
   - cd AnyKernel3
-  - zip -r9 stormbreaker-x00p-test7.zip *
+  - zip -r9 stormbreaker-x00p-test8.zip *
   - cd /home/travis/kernel/out/arch/arm64/boot/dts
   - zip -r9 dtbs.zip qcom/*
 before_deploy:
@@ -48,7 +48,7 @@ deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file: $HOME/kernel/out/arch/arm64/boot/dts/dtbs.zip
-  file: $HOME/kernel/AnyKernel3/stormbreaker-x00p-test7.zip
+  file: $HOME/kernel/AnyKernel3/stormbreaker-x00p-test8.zip
   skip_cleanup: true
   on:
     tags: true

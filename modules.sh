@@ -22,7 +22,7 @@ for MOD in $(find "${OUTDIR}" -name '*.ko') ; do
 			"${MOD}"
 	find "${OUTDIR}" -name '*.ko' -exec cp {} "${MODULEDIR}" \;
 	case ${MOD} in
-		*/*.ko)
+		*/wlan.ko)
 			cp -ar "${MOD}" "${PRIMA}"
 			cp -ar "${MOD}" "${PRONTO}"
 			cp -ar "${MOD}" "${MODULEDIR}"

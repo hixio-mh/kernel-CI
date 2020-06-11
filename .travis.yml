@@ -35,6 +35,9 @@ script:
   - make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-android-
   - git clone -b X01A https://github.com/stormbreaker-project/AnyKernel3
   - cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
+  - wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/gcc/modules.sh
+  - chmod a+x modules.sh
+  - source build.sh
   - zip -r9 stormbreaker-x01a-test2.zip *
   - cd /home/travis/kernel/out/arch/arm64/boot/dts
   - zip -r9 dtbs.zip qcom/*

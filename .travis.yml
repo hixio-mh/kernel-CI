@@ -24,19 +24,19 @@ before_script:
   - curl https://storage.googleapis.com/git-repo-downloads/repo > ~/bin/repo
   - chmod a+x ~/bin/repo
 script:
-  - cd $HOME && git clone -b kud https://github.com/iamsaalim/kernel_asus_X00P --depth 1 kernel
+  - cd $HOME && git clone -b rebase https://github.com/iamsaalim/asus_X01AD --depth 1 kernel
   - cd $HOME/kernel
   - git clone https://github.com/stormbreaker-project/aarch64-linux-android-4.9 --depth 1 gcc
   - export PATH="$HOME/kernel/gcc/bin:$PATH"
   - export ARCH=arm64 SUBARCH=arm64
   - export KBUILD_BUILD_USER=danascape
   - export KBUILD_BUILD_HOST=travisCI
-  - make O=out X00P_defconfig ARCH=arm64
+  - make O=out X01A_defconfig ARCH=arm64
   - make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-android-
-  - git clone -b X00P https://github.com/stormbreaker-project/AnyKernel3
+  - git clone -b X01A https://github.com/stormbreaker-project/AnyKernel3
   - cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
   - cd AnyKernel3
-  - zip -r9 stormbreaker-x00p-test8.zip *
+  - zip -r9 stormbreaker-x01a-test1.zip *
   - cd /home/travis/kernel/out/arch/arm64/boot/dts
   - zip -r9 dtbs.zip qcom/*
 before_deploy:
@@ -48,7 +48,7 @@ deploy:
   provider: releases
   api_key: "$GITHUB_TOKEN"
   file: $HOME/kernel/out/arch/arm64/boot/dts/dtbs.zip
-  file: $HOME/kernel/AnyKernel3/stormbreaker-x00p-test8.zip
+  file: $HOME/kernel/AnyKernel3/stormbreaker-x01a-test1.zip
   skip_cleanup: true
   on:
     tags: true

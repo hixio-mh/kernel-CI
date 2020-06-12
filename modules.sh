@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 # setup paths
-KERNEL_DIR=$PWD
-ZIP_DIR=$KERNEL_DIR/AnyKernel3
-OUTDIR="$PWD/out/"
-SRCDIR="$PWD/"
-MODULEDIR="$PWD/AnyKernel3/modules/vendor/lib/modules/"
-PRIMA="$PWD/AnyKernel3/modules/vendor/lib/modules/wlan.ko"
-PRONTO="$PWD/AnyKernel3/modules/vendor/lib/modules/pronto/pronto_wlan.ko"
-STRIP="$PWD/gcc/bin/$(echo "$(find "$PWD/gcc/bin" -type f -name "aarch64-*-gcc")" | awk -F '/' '{print $NF}' |\
+KERNEL_DIR="/home/travis/kernel"
+ZIP_DIR="$KERNEL_DIR/AnyKernel3"
+OUTDIR="$KERNEL_DIR/out/"
+SRCDIR="$KERNEL_DIR"
+MODULEDIR="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/"
+PRIMA="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/wlan.ko"
+PRONTO="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/pronto/pronto_wlan.ko"
+STRIP="$KERNEL_DIR/gcc/bin/$(echo "$(find "$KERNEL_DIR/gcc/bin" -type f -name "aarch64-*-gcc")" | awk -F '/' '{print $NF}' |\
 			sed -e 's/gcc/strip/')"
 
 cd $ZIP_DIR

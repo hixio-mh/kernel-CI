@@ -38,7 +38,6 @@ script:
   - wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/gcc/modules.sh
   - chmod a+x modules.sh
   - source modules.sh
-  - cp ../out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
   - zip -r9 stormbreaker-x01a-test3.zip *
 before_deploy:
   # Set up git user name and tag this commit

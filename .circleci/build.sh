@@ -79,7 +79,6 @@ OUTDIR="$KERNEL_DIR/out/"
 SRCDIR="$KERNEL_DIR"
 MODULEDIR="$kernelzip/modules/vendor/lib/modules/"
 PRIMA="$kernelzip/modules/vendor/lib/modules/wlan.ko"
-PRONTO="$kernelzip/modules/vendor/lib/modules/pronto/pronto_wlan.ko"
 STRIP="$KERNEL_DIR/gcc/bin/$(echo "$(find "$KERNEL_DIR/gcc/bin" -type f -name "aarch64-*-gcc")" | awk -F '/' '{print $NF}' |\
 			sed -e 's/gcc/strip/')"
 
@@ -91,7 +90,6 @@ for MOD in $(find "${OUTDIR}" -name '*.ko') ; do
 	case ${MOD} in
 		*/wlan.ko)
 			cp -ar "${MOD}" "${PRIMA}"
-			cp -ar "${MOD}" "${PRONTO}"
 			cp -ar "${MOD}" "${MODULEDIR}"
 	esac
 done

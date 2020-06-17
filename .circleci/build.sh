@@ -75,16 +75,15 @@ function module() {
 
 # setup paths
 KERNEL_DIR="$HOME/kernel"
-ZIP_DIR="$KERNEL_DIR/AnyKernel3"
 OUTDIR="$KERNEL_DIR/out/"
 SRCDIR="$KERNEL_DIR"
-MODULEDIR="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/"
-PRIMA="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/wlan.ko"
-PRONTO="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/pronto/pronto_wlan.ko"
+MODULEDIR="$kernelzip/modules/vendor/lib/modules/"
+PRIMA="$kernelzip/modules/vendor/lib/modules/wlan.ko"
+PRONTO="$kernelzip/modules/vendor/lib/modules/pronto/pronto_wlan.ko"
 STRIP="$KERNEL_DIR/gcc/bin/$(echo "$(find "$KERNEL_DIR/gcc/bin" -type f -name "aarch64-*-gcc")" | awk -F '/' '{print $NF}' |\
 			sed -e 's/gcc/strip/')"
 
-cd $ZIP_DIR
+cd $kernelzip
 
 for MOD in $(find "${OUTDIR}" -name '*.ko') ; do
 	"${STRIP}" --strip-unneeded --strip-debug "${MOD}" &> /dev/null

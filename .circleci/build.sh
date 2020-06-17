@@ -2,15 +2,16 @@
 # Copyright (C) 2020 Saalim Quadri (iamsaalim)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+cd $HOME
 echo "Cloning dependencies"
 git clone --depth=1 https://github.com/asusdevices/android_kernel_asus_msm8937 -b los-2 kernel
 cd kernel
 git clone --depth=1 https://github.com/stormbreaker-project/stormbreaker-clang clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
-git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X00P
 echo "Done"
 export kernelzip="$HOME/AnyKernel3"
+export IMAGE="$HOME/kernel/out/arch/arm64/boot/Image.gz-dtb"
 GCC="$(pwd)/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
@@ -57,14 +58,14 @@ function compile() {
                              ARCH=arm64 \
 			     CROSS_COMPILE=aarch64-linux-android- \
 			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
-    cp out/arch/arm64/boot/Image.gz-dtb $kernelzip/
 }
 
 # Zipping
 function zip() {
-    ls
+    git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X00P $kernelzip
     cd $kernelzip
-    zip -r9 Stormbreaker-X00P-${TANGGAL}.zip *
+    cp $IMAGE $kernelzip/
+    make normal
     cd ..
 }
 sendinfo

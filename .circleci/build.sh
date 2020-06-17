@@ -69,8 +69,43 @@ function zip() {
     cd ..
 }
 
+# Create modules
+function module() {
+
+# setup paths
+KERNEL_DIR="$HOME/kernel"
+ZIP_DIR="$KERNEL_DIR/AnyKernel3"
+OUTDIR="$KERNEL_DIR/out/"
+SRCDIR="$KERNEL_DIR"
+MODULEDIR="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/"
+PRIMA="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/wlan.ko"
+PRONTO="$KERNEL_DIR/AnyKernel3/modules/vendor/lib/modules/pronto/pronto_wlan.ko"
+STRIP="$KERNEL_DIR/gcc/bin/$(echo "$(find "$KERNEL_DIR/gcc/bin" -type f -name "aarch64-*-gcc")" | awk -F '/' '{print $NF}' |\
+			sed -e 's/gcc/strip/')"
+
+cd $ZIP_DIR
+
+for MOD in $(find "${OUTDIR}" -name '*.ko') ; do
+	"${STRIP}" --strip-unneeded --strip-debug "${MOD}" &> /dev/null
+	"${SRCDIR}"/scripts/sign-file sha512 \
+			"${OUTDIR}/signing_key.priv" \
+			"${OUTDIR}/signing_key.x509" \
+			"${MOD}"
+	find "${OUTDIR}" -name '*.ko' -exec cp {} "${MODULEDIR}" \;
+	case ${MOD} in
+		*/wlan.ko)
+			cp -ar "${MOD}" "${PRIMA}"
+			cp -ar "${MOD}" "${PRONTO}"
+			cp -ar "${MOD}" "${MODULEDIR}"
+	esac
+done
+
+cd ..
+}
+
 sendinfo
 compile
+module
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))

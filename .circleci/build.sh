@@ -11,6 +11,7 @@ git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-androi
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
 echo "Done"
 export kernelzip="$HOME/AnyKernel3"
+git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X00P $kernelzip
 export IMAGE="$HOME/kernel/out/arch/arm64/boot/Image.gz-dtb"
 GCC="$HOME/kernel/gcc/bin/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
@@ -62,14 +63,23 @@ function compile() {
 
 # Zipping
 function zip() {
-    git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X00P $kernelzip
     cd $kernelzip
     cp $IMAGE $kernelzip/
     make normal
     cd ..
 }
+
+# create dts
+function createdts() {
+    cp out/arch/arm64/boot/dts/qcom/msm8937-pmi8940-X00P.dtb $kernelzip/
+    cd $kernelzip
+    dtc -I dtb -O dts -o msm8937-pmi8940-X00P.dts msm8937-pmi8940-X00P.dtb
+    cd ..
+}
+
 sendinfo
 compile
+createdts
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))

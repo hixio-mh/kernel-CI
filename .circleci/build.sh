@@ -61,6 +61,7 @@ function compile() {
 
 # Zipping
 function zip() {
+    ls
     cd AnyKernel3
     zip -r9 Stormbreaker-X00P-${TANGGAL}.zip *
     cd ..

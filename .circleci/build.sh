@@ -12,7 +12,7 @@ git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideab
 echo "Done"
 export kernelzip="$HOME/AnyKernel3"
 export IMAGE="$HOME/kernel/out/arch/arm64/boot/Image.gz-dtb"
-GCC="$(pwd)/aarch64-linux-android-"
+GCC="$HOME/kernel/gcc/bin/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
 export CONFIG_PATH=$PWD/arch/arm64/configs/X00P_defconfig

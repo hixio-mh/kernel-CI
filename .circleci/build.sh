@@ -56,7 +56,7 @@ function compile() {
                              ARCH=arm64 \
 			     CROSS_COMPILE=aarch64-linux-android- \
 			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
-    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
+    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3
 }
 
 # Zipping

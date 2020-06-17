@@ -87,10 +87,6 @@ cd $kernelzip
 
 for MOD in $(find "${OUTDIR}" -name '*.ko') ; do
 	"${STRIP}" --strip-unneeded --strip-debug "${MOD}" &> /dev/null
-	"${SRCDIR}"/scripts/sign-file sha512 \
-			"${OUTDIR}/signing_key.priv" \
-			"${OUTDIR}/signing_key.x509" \
-			"${MOD}"
 	find "${OUTDIR}" -name '*.ko' -exec cp {} "${MODULEDIR}" \;
 	case ${MOD} in
 		*/wlan.ko)

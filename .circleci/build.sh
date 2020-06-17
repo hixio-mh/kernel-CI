@@ -10,6 +10,7 @@ git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-androi
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
 git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X00P
 echo "Done"
+export kernelzip="$HOME/AnyKernel3"
 GCC="$(pwd)/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
@@ -30,7 +31,7 @@ function sendinfo() {
 
 # Push kernel to channel
 function push() {
-    cd AnyKernel3
+    cd $kernelzip
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
         -F chat_id="$chat_id" \
@@ -56,13 +57,13 @@ function compile() {
                              ARCH=arm64 \
 			     CROSS_COMPILE=aarch64-linux-android- \
 			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
-    cp out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
+    cp out/arch/arm64/boot/Image.gz-dtb $kernelzip/
 }
 
 # Zipping
 function zip() {
     ls
-    cd AnyKernel3
+    cd $kernelzip
     zip -r9 Stormbreaker-X00P-${TANGGAL}.zip *
     cd ..
 }

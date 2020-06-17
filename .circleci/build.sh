@@ -69,17 +69,8 @@ function zip() {
     cd ..
 }
 
-# create dts
-function createdts() {
-    cp out/arch/arm64/boot/dts/qcom/msm8937-pmi8940-X00P.dtb $kernelzip/
-    cd $kernelzip
-    dtc -I dtb -O dts -o msm8937-pmi8940-X00P.dts msm8937-pmi8940-X00P.dtb
-    cd ..
-}
-
 sendinfo
 compile
-createdts
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))

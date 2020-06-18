@@ -10,7 +10,6 @@ jobs:
            git config --global user.name "iamsaalim"
            git config --global user.email "saalimquadri1@gmail.com"
            git config --global color.ui false
-           git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh && cd ..
            mkdir kernel
            cd kernel
            wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/proton/.circleci/build.sh

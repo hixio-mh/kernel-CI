@@ -5,23 +5,22 @@
 cd $HOME
 echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/iamsaalim/kernel_asus_X01A -b merge-caf kernel
+git clone --depth=1 https://github.com/iamsaalim/kernel_asus_X01A -b 4.9-lav kernel
 cd kernel
-git clone --depth=1 https://github.com/stormbreaker-project/stormbreaker-clang clang
-git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
-git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
+git clone --depth=1  https://github.com/kdrag0n/proton-clang clang
 echo "Done"
 export kernelzip="$HOME/AnyKernel3"
-git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X01A $kernelzip
+git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b lav $kernelzip
 export IMAGE="$HOME/kernel/out/arch/arm64/boot/Image.gz-dtb"
-GCC="$HOME/kernel/gcc/bin/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
-export CONFIG_PATH=$PWD/arch/arm64/configs/zql1830-perf_defconfig
-PATH="${PWD}/clang/bin:${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
+export CONFIG_PATH=$PWD/arch/arm64/configs/wayne_defconfig
+PATH="${PWD}/clang/bin:${PATH}"
 export ARCH=arm64
 export KBUILD_BUILD_HOST=hetzner
 export KBUILD_BUILD_USER="saalim"
+export LD_LIBRARY_PATH="${PWD}/clang/lib:${PWD}/clang/lib64:$LD_LIBRARY_PATH"
+export KBUILD_COMPILER_STRING="$(${PWD}/clang/bin/clang --version | head -n 1 | perl -pe 's/\((?:http|git).*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//' -e 's/^.*clang/clang/')"
 
 # Send info to channel
 function sendinfo() {
@@ -55,11 +54,20 @@ function finerr() {
 
 # Compile
 function compile() {
-    make O=out ARCH=arm64 zql1830-perf_defconfig
+    make O=out ARCH=arm64 wayne_defconfig
     make -j$(nproc --all) O=out \
-                             ARCH=arm64 \
-			     CROSS_COMPILE=aarch64-linux-android- \
-			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
+                      ARCH=arm64 \
+                      CC=clang \
+                      CLANG_TRIPLE=aarch64-linux-gnu- \
+                      CROSS_COMPILE=aarch64-linux-gnu- \
+                      CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
+                      LLVM="llvm-" \
+                      AR=llvm-ar \
+                      NM=llvm-nm \
+                      OBJCOPY=llvm-objcopy \
+                      OBJDUMP=llvm-objdump \
+                      STRIP=llvm-strip
+
 }
 
 # Zipping
@@ -69,7 +77,6 @@ function zip() {
     make normal
     cd ..
 }
-
 # Create modules
 function module() {
 
@@ -99,7 +106,6 @@ cd ..
 
 sendinfo
 compile
-module
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))

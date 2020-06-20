@@ -1,48 +1,43 @@
 #!/usr/bin/env bash
-# Copyright (C) 2020 Saalim Quadri (iamsaalim)
-# SPDX-License-Identifier: GPL-3.0-or-later
-
-cd $HOME
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/asusdevices/android_kernel_asus_msm8937 -b eas kernel
+git clone --depth=1 https://github.com/stormbreaker-project/kernel_xiaomi_whyred.git -b hmp-old-cam  kernel
 cd kernel
-git clone --depth=1 https://github.com/stormbreaker-project/stormbreaker-clang clang
-git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
-git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
+git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
+git clone --depth=1 https://github.com/sreekfreak995/AnyKernel3.git AnyKernel
 echo "Done"
-export kernelzip="$HOME/AnyKernel3"
-git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X00P $kernelzip
-export IMAGE="$HOME/kernel/out/arch/arm64/boot/Image.gz-dtb"
-GCC="$HOME/kernel/gcc/bin/aarch64-linux-android-"
+IMAGE=$(pwd)/out/arch/arm64/boot/Image.gz-dtb
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
-export CONFIG_PATH=$PWD/arch/arm64/configs/X00P_defconfig
-PATH="${PWD}/clang/bin:${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
+export CONFIG_PATH=$PWD/arch/arm64/configs/whyred-perf_defconfig
+PATH="${PWD}/clang/bin:$PATH"
 export ARCH=arm64
-export KBUILD_BUILD_HOST=hetzner
-export KBUILD_BUILD_USER="saalim"
-
-# Send info to channel
+export KBUILD_BUILD_HOST=circleci
+export KBUILD_BUILD_USER="Sreekanth"
+# sticker plox
+function sticker() {
+    curl -s -X POST "https://api.telegram.org/bot$token/sendSticker" \
+        -d sticker="CAACAgUAAxkBAAJi017AAw5j25_B3m8IP-iy98ffcGHZAAJAAgACeV4XIusNfRHZD3hnGQQ" \
+        -d chat_id=$chat_id
+}
+# Send info plox channel
 function sendinfo() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
         -d chat_id="$chat_id" \
         -d "disable_web_page_preview=true" \
         -d "parse_mode=html" \
-        -d text="<b>• Kernel •</b>%0ABuild started on <code>Circle CI/CD</code>%0AFor device <b>Zenfone Max M1</b> (X00P)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b> #Test"
+        -d text="<b>• Stormbreaker Kernel •</b>%0ABuild started on <code>Circle CI</code>%0AFor device <b>Xiaomi Redmi Note5/5Pro</b> (whyred)%0Abranch <code>$(git rev-parse --abbrev-ref HEAD)</code>(master)%0AUnder commit <code>$(git log --pretty=format:'"%h : %s"' -1)</code>%0AUsing compiler: <code>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</code>%0AStarted on <code>$(date)</code>%0A<b>Build Status:</b>#Stable"
 }
-
 # Push kernel to channel
 function push() {
-    cd $kernelzip
+    cd AnyKernel
     ZIP=$(echo *.zip)
     curl -F document=@$ZIP "https://api.telegram.org/bot$token/sendDocument" \
         -F chat_id="$chat_id" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Zenfone Max M1 (X00P)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
+        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Xiaomi Redmi Note 5/5Pro (whyred)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
 }
-
-# spam Error
+# Fin Error
 function finerr() {
     curl -s -X POST "https://api.telegram.org/bot$token/sendMessage" \
         -d chat_id="$chat_id" \
@@ -51,27 +46,25 @@ function finerr() {
         -d text="Build throw an error(s)"
     exit 1
 }
-
-# Compile
+# Compile plox
 function compile() {
-    make O=out ARCH=arm64 X00P_defconfig
-    make -j$(nproc --all) O=out \
+   make O=out ARCH=arm64 whyred-perf_defconfig
+       make -j$(nproc --all) O=out \
                              ARCH=arm64 \
-			     CROSS_COMPILE=aarch64-linux-android- \
-			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
+			     CC=clang \
+			     CROSS_COMPILE=aarch64-linux-gnu- \
+			     CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+   cp out/arch/arm64/boot/Image.gz-dtb AnyKernel
 }
-
 # Zipping
-function zip() {
-    cd $kernelzip
-    cp $IMAGE $kernelzip/
-    make normal
+function zipping() {
+    cd AnyKernel || exit 1
+    zip -r9 Stormbreaker-whyred-${TANGGAL}.zip *
     cd ..
 }
-
+sticker
 sendinfo
 compile
-zip
+zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
-push

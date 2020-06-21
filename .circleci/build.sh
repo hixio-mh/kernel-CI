@@ -55,7 +55,7 @@ function finerr() {
 
 # Compile
 function compile() {
-    make O=out ARCH=arm64 zql1830-perf_defconfig
+    make O=out ARCH=arm64 X01A_defconfig
     make -j$(nproc --all) O=out \
                              ARCH=arm64 \
 			     CROSS_COMPILE=aarch64-linux-android- \

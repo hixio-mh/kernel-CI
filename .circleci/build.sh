@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/kernel_xiaomi_whyred.git -b hmp-old-cam  kernel
+git clone --depth=1 https://github.com/stormbreaker-project/kernel_xiaomi_whyred.git -b eas-old-cam  kernel
 cd kernel
 git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 git clone --depth=1 https://github.com/sreekfreak995/AnyKernel3.git AnyKernel
@@ -62,9 +62,10 @@ function zipping() {
     zip -r9 Stormbreaker-whyred-${TANGGAL}.zip *
     cd ..
 }
-sticker
 sendinfo
 compile
 zipping
 END=$(date +"%s")
 DIFF=$(($END - $START))
+push
+sticker

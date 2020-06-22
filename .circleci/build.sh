@@ -4,11 +4,9 @@
 
 cd $HOME
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/asusdevices/android_kernel_asus_msm8937 -b eas kernel
+git clone --depth=1 https://github.com/asusdevices/android_kernel_asus_msm8937 -b lineage-17.1 kernel
 cd kernel
-git clone --depth=1 https://github.com/stormbreaker-project/stormbreaker-clang clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
-git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32
 echo "Done"
 export kernelzip="$HOME/AnyKernel3"
 git clone --depth=1 https://github.com/stormbreaker-project/AnyKernel3 -b X00P $kernelzip
@@ -17,7 +15,7 @@ GCC="$HOME/kernel/gcc/bin/aarch64-linux-android-"
 TANGGAL=$(date +"%F-%S")
 START=$(date +"%s")
 export CONFIG_PATH=$PWD/arch/arm64/configs/X00P_defconfig
-PATH="${PWD}/clang/bin:${PWD}/gcc/bin:${PWD}/gcc32/bin:${PATH}"
+PATH="${PWD}/gcc/bin:${PATH}"
 export ARCH=arm64
 export KBUILD_BUILD_HOST=hetzner
 export KBUILD_BUILD_USER="saalim"
@@ -57,8 +55,7 @@ function compile() {
     make O=out ARCH=arm64 X00P_defconfig
     make -j$(nproc --all) O=out \
                              ARCH=arm64 \
-			     CROSS_COMPILE=aarch64-linux-android- \
-			     CROSS_COMPILE_ARM32=arm-linux-androideabi-
+			     CROSS_COMPILE=aarch64-linux-android-
 }
 
 # Zipping

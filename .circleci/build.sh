@@ -97,9 +97,17 @@ done
 cd ..
 }
 
+# Generate dtbo
+
+function dtbo() {
+KERNEL_DIR="$HOME/kernel"
+python2 "$KERNEL_DIR/scripts/ufdt/libufdt/utils/src/mkdtboimg.py" create "$kernelzip/dtbo.img" --page_size=4096 "$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sdm632-overlay.dtbo"
+}
+
 sendinfo
 compile
 module
+dtbo
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))

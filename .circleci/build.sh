@@ -40,7 +40,7 @@ function push() {
         -F chat_id="$chat_id" \
         -F "disable_web_page_preview=true" \
         -F "parse_mode=html" \
-        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Zenfone Max M1 (X00P)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
+        -F caption="Build took $(($DIFF / 60)) minute(s) and $(($DIFF % 60)) second(s). | For <b>Zenfone Max M2 (X01A)</b> | <b>$(${GCC}gcc --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g')</b>"
 }
 
 # spam Error
@@ -98,11 +98,12 @@ cd ..
 }
 
 # Generate dtbo
-
 function dtbo() {
+
 KERNEL_DIR="$HOME/kernel"
+    cd $KERNEL_DIR
     git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt
-    python2 "$KERNEL_DIR/scripts/ufdt/libufdt/utils/src/mkdtboimg.py" create "$kernelzip/dtbo.img" "$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/*.dtbo"
+    python scripts/ufdt/libufdt/utils/src/mkdtboimg.py create $kernelzip/dtbo.img --page_size=4096 out/arch/arm64/boot/dts/qcom/*.dtbo
 }
 
 sendinfo

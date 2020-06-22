@@ -102,7 +102,7 @@ cd ..
 function dtbo() {
 KERNEL_DIR="$HOME/kernel"
     git clone https://android.googlesource.com/platform/system/libufdt "$KERNEL_DIR"/scripts/ufdt/libufdt
-    python2 "$KERNEL_DIR/scripts/ufdt/libufdt/utils/src/mkdtboimg.py" create "$kernelzip/dtbo.img" --page_size=4096 "$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sdm632-overlay.dtbo"
+    python2 "$KERNEL_DIR/scripts/ufdt/libufdt/utils/src/mkdtboimg.py" create "$kernelzip/dtbo.img" --page_size=4096 "$KERNEL_DIR/out/arch/arm64/boot/dts/qcom/sdm632-rumi-overlay.dtbo"
 }
 
 sendinfo

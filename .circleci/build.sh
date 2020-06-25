@@ -109,7 +109,6 @@ KERNEL_DIR="$HOME/kernel"
 sendinfo
 compile
 module
-dtbo
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))

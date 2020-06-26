@@ -4,7 +4,7 @@
 
 cd $HOME
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/asusdevices/android_kernel_asus_msm8937 -b 27-06 kernel
+git clone --depth=1 https://github.com/stormbreaker-project/X00P -b 27-06 kernel
 cd kernel
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32

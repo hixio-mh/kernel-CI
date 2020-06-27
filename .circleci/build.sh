@@ -5,7 +5,7 @@
 cd $HOME
 echo -e "machine github.com\n  login $GITHUB_TOKEN" > ~/.netrc
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/iamsaalim/kernel_asus_X01A -b cus kernel
+git clone --depth=1 https://github.com/asusdevices/android_kernel_asus_X01A -b lineage-17.1 kernel
 cd kernel
 git clone --depth=1 https://github.com/stormbreaker-project/stormbreaker-clang clang
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
@@ -108,8 +108,6 @@ KERNEL_DIR="$HOME/kernel"
 
 sendinfo
 compile
-module
-dtbo
 zip
 END=$(date +"%s")
 DIFF=$(($END - $START))

@@ -4,7 +4,7 @@
 
 cd $HOME
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/X00P -b dev/back kernel
+git clone --depth=1 https://github.com/stormbreaker-project/X00P -b test/back kernel
 cd kernel
 git clone --depth=1 https://github.com/stormbreaker-project/aarch64-linux-android-4.9 gcc
 git clone --depth=1 https://github.com/stormbreaker-project/arm-linux-androideabi-4.9 gcc32

@@ -6,14 +6,14 @@ jobs:
    steps:
       - run:
           command: |
-           apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential zip curl libstdc++6 git wget python gcc clang libssl-dev repo rsync flex bison device-tree-compiler
-           git config --global user.name "iamsaalim"
-           git config --global user.email "saalimquadri1@gmail.com"
+           apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential zip curl libstdc++6 git wget python gcc clang libssl-dev repo rsync flex bison
+           git config --global user.name "CryllicBuster273"
+           git config --global user.email "cryllicbuster273@pixelexperience.org"
            git config --global color.ui false
            git clone https://github.com/akhilnarang/scripts && cd scripts && bash setup/android_build_env.sh && cd ..
-           mkdir kernel
-           cd kernel
-           wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/master/.circleci/build.sh
+           mkdir SB
+           cd SB
+           wget https://raw.githubusercontent.com/stormbreaker-project/kernel-CI/phoenix-rebase/.circleci/build.sh
            source build.sh
 workflows:
   version: 2.1

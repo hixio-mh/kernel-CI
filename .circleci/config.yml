@@ -6,7 +6,7 @@ jobs:
    steps:
       - run:
           command: |
-           apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential zip curl libstdc++6 git wget python gcc clang libssl-dev repo rsync flex bison
+           apt-get -y update && apt-get -y upgrade && apt-get -y install bc build-essential zip curl libstdc++6 git wget python gcc clang libssl-dev repo rsync flex bison default-jre
            git config --global user.name "CryllicBuster273"
            git config --global user.email "cryllicbuster273@pixelexperience.org"
            git config --global color.ui false

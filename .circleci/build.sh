@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 echo "Cloning dependencies"
-git clone --depth=1 https://github.com/stormbreaker-project/kernel_xiaomi_whyred.git -b eas-old-cam  kernel
+git clone --depth=1 https://github.com/sreekfreak995/kranul.git -b eas-old-cam  kernel
 cd kernel
 git clone --depth=1 https://github.com/kdrag0n/proton-clang clang
 git clone --depth=1 https://github.com/sreekfreak995/AnyKernel3.git AnyKernel
